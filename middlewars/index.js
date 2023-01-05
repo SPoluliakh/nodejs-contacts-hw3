@@ -1,5 +1,5 @@
 const validation = require("./validation");
-const cntrlWrap = require("./cntrlWrap");
+const cntrlWrap = require("../helpers/cntrlWrap");
 
 module.exports = {
   validation,

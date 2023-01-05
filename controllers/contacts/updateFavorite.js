@@ -1,9 +1,12 @@
 const { Contact } = require("../../models/contact");
 
-const getById = async (req, res) => {
+const updateFavorite = async (req, res) => {
+  const { body } = req;
   const { id } = req.params;
-  const contact = await Contact.findById(id);
-  if (!contact) {
+  const contactToUpdate = await Contact.findByIdAndUpdate(id, body, {
+    new: true,
+  });
+  if (!contactToUpdate) {
     const error = new Error(`contact whith id = ${id} not found`);
     error.status = 404;
     throw error;
@@ -12,9 +15,9 @@ const getById = async (req, res) => {
     status: "success",
     code: 200,
     data: {
-      result: contact,
+      result: contactToUpdate,
     },
   });
 };
 
-module.exports = getById;
+module.exports = updateFavorite;
