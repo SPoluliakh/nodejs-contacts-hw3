@@ -1,7 +1,8 @@
 const express = require("express");
 
 const { contactsControllers: cntr } = require("../../controllers");
-const { validation, cntrlWrap } = require("../../middlewars");
+const { validation, isValidId } = require("../../middlewars");
+const { cntrlWrap } = require("../../helpers");
 const {
   contactSchema,
   contactSchemaFavorite,
@@ -11,13 +12,18 @@ const contactsRouter = express.Router();
 
 contactsRouter.get("/", cntrlWrap(cntr.getAll));
 
-contactsRouter.get("/:id", cntrlWrap(cntr.getById));
+contactsRouter.get("/:id", isValidId, cntrlWrap(cntr.getById));
 
 contactsRouter.post("/", validation(contactSchema), cntrlWrap(cntr.add));
 
-contactsRouter.delete("/:id", cntrlWrap(cntr.remove));
+contactsRouter.delete("/:id", isValidId, cntrlWrap(cntr.remove));
 
-contactsRouter.put("/:id", validation(contactSchema), cntrlWrap(cntr.update));
+contactsRouter.put(
+  "/:id",
+  isValidId,
+  validation(contactSchema),
+  cntrlWrap(cntr.update)
+);
 
 contactsRouter.patch(
   "/:id/favorite",
